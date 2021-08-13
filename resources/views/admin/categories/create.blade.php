@@ -8,14 +8,20 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            {!! Form::open(['url' => 'admin.categories.store ']) !!}
+            {!! Form::open(['route' => 'admin.categories.store']) !!}
                 <div class="form-group">
                     {!! Form::label('name', 'nombre') !!}
                     {!! Form::text('name', null , ['class'=>'form-control', 'placeholder'=>'Categoria']) !!}
+                    @error('name')
+                        <span class="text-danger">{{$message}}</span>
+                    @enderror
                 </div>
                 <div class="form-group">
                     {!! Form::label('slug', 'Slug') !!}
-                    {!! Form::text('slug', null , ['class'=>'form-control', 'placeholder'=>'URL']) !!}
+                    {!! Form::text('slug', null , ['class'=>'form-control', 'placeholder'=>'URL', 'readonly']) !!}
+                    @error('slug')
+                        <span class="text-danger">{{$message}}</span>
+                    @enderror
                 </div>
                 {!! Form::submit('Crear categoria', ['class'=>"btn btn-primary"]) !!}
             {!! Form::close() !!}
@@ -28,5 +34,14 @@
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+    <script src="{{asset('vendor/jQuery-Plugin-stringToSlug-1.3/jquery.stringToSlug.min.js')}}"></script>
+    <script>
+        $(document).ready( function() {
+        $("#name").stringToSlug({
+            setEvents: 'keyup keydown blur',
+            getPut: '#slug',
+            space: '-'
+        });
+        });
+    </script>
 @stop
